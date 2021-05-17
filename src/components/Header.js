@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link as LinkScroll } from 'react-scroll'
 import { animateScroll as scroll } from 'react-scroll'
 import { itemMenu } from '../data'
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 const Header = () => {
+    const [burgerOpen, setBurgerOpen] = useState(false)
+    const toggle = () => {
+        console.log(burgerOpen)
+        setBurgerOpen(!burgerOpen)
+    }
+
     function scrollToTop() {
         scroll.scrollToTop();
     }
@@ -27,9 +34,12 @@ const Header = () => {
                 <a href="#">Shop</a>
                 <a href="#">Tesla Account</a>
 
-                <CustomMenu>
+                <CustomMenu  onClick={toggle}>
                 </CustomMenu>
-                <BurgerNav>
+                <BurgerNav show={burgerOpen}>
+                    <CustomWrapper>
+                        <CustomClose  onClick={toggle}/>
+                    </CustomWrapper>
                     <li><a href="#">Existing Inventory</a></li>
                     <li><a href="#">Used Inventory</a></li>
                     <li><a href="#">Trade In</a></li>
@@ -47,6 +57,13 @@ const Header = () => {
 }
 
 export default Header
+const CustomWrapper = styled.div`
+display: flex;
+justify-content: flex-end;
+`
+const CustomClose = styled(CloseIcon)`
+cursor: pointer;
+`
 const BurgerNav = styled.div`
 position: fixed;
 top: 0;
@@ -56,7 +73,14 @@ background: white;
 width: 300px;
 z-index: 999;
 list-style-type: none;
-justify-content: center;
+display: flex;
+flex-direction: column;
+padding: 20px;
+transform: ${props => props.show ? 'translateX(100%)' : 'translateX(0)'};
+li {
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(0,0,0, 0.2);
+}
 `
 const CustomMenu = styled(MenuIcon)`
 cursor: pointer;

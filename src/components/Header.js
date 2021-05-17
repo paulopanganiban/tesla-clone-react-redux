@@ -5,10 +5,13 @@ import { animateScroll as scroll } from 'react-scroll'
 import { itemMenu } from '../data'
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
+import { useSelector } from 'react-redux'
+import { selectCars } from '../features/car/carSlice'
 const Header = () => {
+    const cars = useSelector(selectCars)
     const [burgerOpen, setBurgerOpen] = useState(false)
     const toggle = () => {
-        console.log(burgerOpen)
+        console.log(cars)
         setBurgerOpen(!burgerOpen)
     }
 
@@ -21,13 +24,13 @@ const Header = () => {
                 <img src="/images/logo.svg" alt="" />
             </a>
             <Menu>
-                {itemMenu.map((item) => (
-                    <MenuLink to={item.id}
-                        activeClass="active"
-                        spy={true}
-                        smooth={true}
-                        duration={500}
-                    ><span>{item.title}</span></MenuLink>
+                {cars && cars.map((car, index) => (
+                      <MenuLink to={index}
+                      activeClass="active"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                  ><span>{car}</span></MenuLink>
                 ))}
             </Menu>
             <RightMenu>
@@ -76,7 +79,8 @@ list-style-type: none;
 display: flex;
 flex-direction: column;
 padding: 20px;
-transform: ${props => props.show ? 'translateX(100%)' : 'translateX(0)'};
+transform: ${props => props.show ? 'translateX(0)' : 'translateX(100%)'};
+transition: transform 0.2s ease-in-out;
 li {
     padding: 15px 0;
     border-bottom: 1px solid rgba(0,0,0, 0.2);
